@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  *
- * @author Jbran
+ * @author Jbrandon
  */
 public  class Pruebas {
     
@@ -29,7 +29,7 @@ public  class Pruebas {
    UsuariosJpaController CUsuarios = new UsuariosJpaController();
    
    
-   // Consulta de todos los usuarios existentes
+   // Consulta de todos los usuarios y órdenes existentes
    List<Usuarios> usuarios = CUsuarios.findUsuariosEntities();
    List<Orden> ordenes = COrden.findOrdenEntities();
    
@@ -56,12 +56,12 @@ public  class Pruebas {
 //   COrden.edit(edit);
    
    //Procederemos a eliminar la primera orden que creamos.
-//      COrden.destroy(7);
+//      COrden.destroy(7); //Borrar por medio de ID
 
     
     //Impresión de todas las órdenes que tenemos guardadas.
         for (Orden ordene : ordenes) {
-            System.out.println(orden.toString());
+            System.out.println(ordene.toString());
             
         }
     
