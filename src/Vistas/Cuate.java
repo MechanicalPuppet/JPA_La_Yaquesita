@@ -18,7 +18,7 @@ import objetoNegocio.Ingrediente;
  *
  * @author joelvalenzuela
  */
-public class Yaqui extends javax.swing.JDialog {
+public class Cuate extends javax.swing.JDialog {
 
     Platillo platillo;
     ArrayList<JToggleButton> botonesChidori;
@@ -28,7 +28,7 @@ public class Yaqui extends javax.swing.JDialog {
     /**
      * Creates new form Yaqui
      */
-    public Yaqui(java.awt.Frame parent, boolean modal, FmPrincipal fmPrincipal) {
+    public Cuate(java.awt.Frame parent, boolean modal, FmPrincipal fmPrincipal) {
         super(parent, modal);
         initComponents();
         botonesChidori = new ArrayList();
@@ -274,7 +274,7 @@ public class Yaqui extends javax.swing.JDialog {
         
 
         for (Platillo platillo1 : platillos) {
-            if (platillo1.getNombre().equalsIgnoreCase("yaqui")) {
+            if (platillo1.getNombre().equalsIgnoreCase("cuate")) {
                 platillo = platillo1;
                 break;
             }

@@ -154,7 +154,17 @@ public class Platillo implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Platillo[ idplatillo=" + idplatillo + " ]";
+        return nombre + "\t" +"$"+costo +" \n" +
+                formatIngredientes();
     }
-    
+
+    public String formatIngredientes() {
+        String ingredientes = "";
+        for (Ingredientes ingrediente : ingredientesList) {
+            ingredientes = ingredientes.concat("\t" +ingrediente.getNombre() +"\n");
+        }
+        
+        return ingredientes;
+    }
+
 }

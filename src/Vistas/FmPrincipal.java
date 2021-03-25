@@ -5,8 +5,22 @@
  */
 package Vistas;
 
+import Controladores.OrdenHasPlatilloJpaController;
+import Controladores.OrdenJpaController;
+import Controladores.PlatilloJpaController;
+import Controladores.UsuariosJpaController;
+import Entidades.Ingredientes;
+import Entidades.Orden;
+import Entidades.OrdenHasPlatillo;
+import Entidades.Platillo;
+import Entidades.Usuarios;
 import Vistas.Paneles.PanelOrden;
 import Vistas.Paneles.TabbedPanelMenu;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 
 /**
@@ -14,7 +28,13 @@ import javax.swing.JDialog;
  * @author Jbran
  */
 public class FmPrincipal extends javax.swing.JFrame {
-    
+
+    String notasOrden;
+    ArrayList<Platillo> platillos;
+    OrdenJpaController COrden;
+    UsuariosJpaController CUsuarios;
+    PlatilloJpaController cPlatillo;
+
     /**
      * Creates new form NewJFrame
      */
@@ -27,6 +47,12 @@ public class FmPrincipal extends javax.swing.JFrame {
         tbtnHotdogs.setSelected(true);
         btn1.setText("Yaqui");
         btn2.setText("Cuate");
+        notasOrden = "";
+        platillos = new ArrayList<>();
+        COrden = new OrdenJpaController();
+        CUsuarios = new UsuariosJpaController();
+        cPlatillo = new PlatilloJpaController();
+        //cOrdenHasPlatillo = new OrdenHasPlatilloJpaController();
         //panelPrincipal.add(new Panel(Vistas.Paneles.panelMenu));
     }
 
@@ -44,9 +70,9 @@ public class FmPrincipal extends javax.swing.JFrame {
         jFrame3 = new javax.swing.JFrame();
         jPanelRecibo = new javax.swing.JPanel();
         jlblOrden = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTablaPlatillos = new javax.swing.JTable();
         btnSiguiente = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtArea = new javax.swing.JTextArea();
         jPanelOrden = new javax.swing.JPanel();
         tbtnHotdogs = new javax.swing.JToggleButton();
         tbtnBebidas = new javax.swing.JToggleButton();
@@ -92,20 +118,17 @@ public class FmPrincipal extends javax.swing.JFrame {
 
         jlblOrden.setText("Orden: 001");
 
-        jTablaPlatillos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {},
-                {},
-                {},
-                {}
-            },
-            new String [] {
-
+        btnSiguiente.setText("Guardar");
+        btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSiguienteActionPerformed(evt);
             }
-        ));
-        jScrollPane1.setViewportView(jTablaPlatillos);
+        });
 
-        btnSiguiente.setText("Siguiente");
+        txtArea.setEditable(false);
+        txtArea.setColumns(20);
+        txtArea.setRows(5);
+        jScrollPane1.setViewportView(txtArea);
 
         javax.swing.GroupLayout jPanelReciboLayout = new javax.swing.GroupLayout(jPanelRecibo);
         jPanelRecibo.setLayout(jPanelReciboLayout);
@@ -114,17 +137,15 @@ public class FmPrincipal extends javax.swing.JFrame {
             .addGroup(jPanelReciboLayout.createSequentialGroup()
                 .addGroup(jPanelReciboLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelReciboLayout.createSequentialGroup()
-                        .addGroup(jPanelReciboLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelReciboLayout.createSequentialGroup()
-                                .addGap(100, 100, 100)
-                                .addComponent(jlblOrden))
-                            .addGroup(jPanelReciboLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 1, Short.MAX_VALUE))
+                        .addGap(100, 100, 100)
+                        .addComponent(jlblOrden)
+                        .addGap(0, 125, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelReciboLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSiguiente)))
+                        .addComponent(btnSiguiente))
+                    .addGroup(jPanelReciboLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1)))
                 .addContainerGap())
         );
         jPanelReciboLayout.setVerticalGroup(
@@ -132,9 +153,9 @@ public class FmPrincipal extends javax.swing.JFrame {
             .addGroup(jPanelReciboLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jlblOrden)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(btnSiguiente)
                 .addGap(22, 22, 22))
         );
@@ -168,6 +189,12 @@ public class FmPrincipal extends javax.swing.JFrame {
             }
         });
 
+        btn2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelOrdenLayout = new javax.swing.GroupLayout(jPanelOrden);
         jPanelOrden.setLayout(jPanelOrdenLayout);
         jPanelOrdenLayout.setHorizontalGroup(
@@ -197,7 +224,7 @@ public class FmPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanelOrdenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn1)
                     .addComponent(btn2))
-                .addContainerGap(355, Short.MAX_VALUE))
+                .addContainerGap(372, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanelOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, 500, 460));
@@ -209,7 +236,7 @@ public class FmPrincipal extends javax.swing.JFrame {
         tbtnHotdogs.setSelected(true);
         tbtnExtras.setSelected(false);
         tbtnBebidas.setSelected(false);
-        
+
         btn1.setText("Yaqui");
         btn2.setText("Cuate");
     }//GEN-LAST:event_tbtnHotdogsActionPerformed
@@ -231,11 +258,95 @@ public class FmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_tbtnExtrasActionPerformed
 
     private void btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1ActionPerformed
-        if(btn1.getText().equalsIgnoreCase("Yaqui")){
-            JDialog yaqui = new Yaqui(this, true);
+        if (btn1.getText().equalsIgnoreCase("Yaqui")) {
+            Yaqui yaqui = new Yaqui(this, true, this);
             yaqui.setVisible(true);
+
         }
     }//GEN-LAST:event_btn1ActionPerformed
+
+    private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
+        if (btn2.getText().equalsIgnoreCase("Cuate")) {
+            Cuate cuate = new Cuate(this, true, this);
+            cuate.setVisible(true);
+        }
+    }//GEN-LAST:event_btn2ActionPerformed
+
+    private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
+        guardarOrden();
+    }//GEN-LAST:event_btnSiguienteActionPerformed
+
+    public ArrayList getPlatillos() {
+        return platillos;
+    }
+
+    public float calcularOrden() {
+        float total = 0F;
+
+        for (Platillo platillo : platillos) {
+            total += platillo.getCosto();
+        }
+
+        return total;
+    }
+
+    public void guardarOrden() {
+        List<Usuarios> usuarios = CUsuarios.findUsuariosEntities();
+        List<Platillo> platillos = cPlatillo.findPlatilloEntities();
+        Usuarios usuario = usuarios.get(0);
+
+        Orden orden = new Orden();
+        orden.setFecha(new Date());
+        orden.setIdusuario(usuario);
+
+        orden.setTotal(calcularOrden());
+
+        COrden.create(orden);
+
+        guardarOrdenHasPlatillos(orden);
+    }
+
+    public void guardarOrdenHasPlatillos2(Orden orden, OrdenHasPlatillo ordenHasPlatillos) {
+        OrdenHasPlatilloJpaController cOrdenHasPlatillo = new OrdenHasPlatilloJpaController();
+        ordenHasPlatillos.setCantidad(1);
+        ordenHasPlatillos.setOrden(orden);
+
+        try {
+            cOrdenHasPlatillo.create(ordenHasPlatillos);
+        } catch (Exception ex) {
+            System.out.println("Preexisting entity");
+        }
+    }
+
+    public void guardarOrdenHasPlatillos(Orden orden) {
+
+        List<Platillo> platillosBD = cPlatillo.findPlatilloEntities();
+        ArrayList<OrdenHasPlatillo> platillos2 = new ArrayList<>();
+        // ArrayList<Platillo> platillos = new ArrayList<>();
+
+        for (int i = 0; i < platillosBD.size(); i++) {
+
+            for (Platillo platillo : platillos) {
+                OrdenHasPlatillo ordenHasPlatillos = new OrdenHasPlatillo();
+                if (platillo.getNombre().equalsIgnoreCase(platillosBD.get(i).getNombre())) {
+                    ordenHasPlatillos.setPlatillo(platillosBD.get(0));
+                    platillos2.add(ordenHasPlatillos);
+                    ordenHasPlatillos.setPrecio(platillo.getCosto());
+                    ordenHasPlatillos.setNotas(platillo.toString());
+                    guardarOrdenHasPlatillos2(orden, ordenHasPlatillos);
+                }
+
+            }
+
+        }
+
+    }
+
+    public void notasOrden(Platillo platillo) {
+
+        notasOrden = notasOrden.concat(platillo.toString() + "\n");
+        txtArea.setText(notasOrden);
+    }
 
     /**
      * @param args the command line arguments
@@ -283,10 +394,10 @@ public class FmPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelOrden;
     private javax.swing.JPanel jPanelRecibo;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTablaPlatillos;
     private javax.swing.JLabel jlblOrden;
     private javax.swing.JToggleButton tbtnBebidas;
     private javax.swing.JToggleButton tbtnExtras;
     private javax.swing.JToggleButton tbtnHotdogs;
+    private javax.swing.JTextArea txtArea;
     // End of variables declaration//GEN-END:variables
 }
