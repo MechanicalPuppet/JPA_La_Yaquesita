@@ -68,6 +68,7 @@ public class FmPrincipal extends javax.swing.JFrame {
         jFrame1 = new javax.swing.JFrame();
         jFrame2 = new javax.swing.JFrame();
         jFrame3 = new javax.swing.JFrame();
+        jPanel1 = new javax.swing.JPanel();
         jPanelRecibo = new javax.swing.JPanel();
         jlblOrden = new javax.swing.JLabel();
         btnSiguiente = new javax.swing.JButton();
@@ -114,10 +115,22 @@ public class FmPrincipal extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(253, 232, 189));
+        setMaximumSize(new java.awt.Dimension(1366, 726));
+        setMinimumSize(new java.awt.Dimension(1366, 726));
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setBackground(new java.awt.Color(248, 227, 186));
+
+        jPanelRecibo.setBackground(new java.awt.Color(254, 244, 222));
+        jPanelRecibo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jlblOrden.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jlblOrden.setText("Orden: 001");
 
+        btnSiguiente.setBackground(new java.awt.Color(247, 157, 68));
+        btnSiguiente.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         btnSiguiente.setText("Guardar");
         btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,6 +140,7 @@ public class FmPrincipal extends javax.swing.JFrame {
 
         txtArea.setEditable(false);
         txtArea.setColumns(20);
+        txtArea.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         txtArea.setRows(5);
         jScrollPane1.setViewportView(txtArea);
 
@@ -136,16 +150,16 @@ public class FmPrincipal extends javax.swing.JFrame {
             jPanelReciboLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelReciboLayout.createSequentialGroup()
                 .addGroup(jPanelReciboLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelReciboLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE))
                     .addGroup(jPanelReciboLayout.createSequentialGroup()
-                        .addGap(100, 100, 100)
+                        .addGap(147, 147, 147)
                         .addComponent(jlblOrden)
-                        .addGap(0, 125, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelReciboLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSiguiente))
-                    .addGroup(jPanelReciboLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1)))
+                        .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanelReciboLayout.setVerticalGroup(
@@ -153,15 +167,19 @@ public class FmPrincipal extends javax.swing.JFrame {
             .addGroup(jPanelReciboLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jlblOrden)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(btnSiguiente)
-                .addGap(22, 22, 22))
+                .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        getContentPane().add(jPanelRecibo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 290, 460));
+        jPanelOrden.setBackground(new java.awt.Color(254, 244, 222));
+        jPanelOrden.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        tbtnHotdogs.setBackground(new java.awt.Color(240, 60, 31));
+        tbtnHotdogs.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        tbtnHotdogs.setForeground(new java.awt.Color(240, 211, 161));
         tbtnHotdogs.setText("HotDogs");
         tbtnHotdogs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,6 +187,9 @@ public class FmPrincipal extends javax.swing.JFrame {
             }
         });
 
+        tbtnBebidas.setBackground(new java.awt.Color(198, 60, 31));
+        tbtnBebidas.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        tbtnBebidas.setForeground(new java.awt.Color(240, 211, 161));
         tbtnBebidas.setText("Bebidas");
         tbtnBebidas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,6 +197,9 @@ public class FmPrincipal extends javax.swing.JFrame {
             }
         });
 
+        tbtnExtras.setBackground(new java.awt.Color(198, 60, 31));
+        tbtnExtras.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        tbtnExtras.setForeground(new java.awt.Color(240, 211, 161));
         tbtnExtras.setText("Extras");
         tbtnExtras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -183,12 +207,18 @@ public class FmPrincipal extends javax.swing.JFrame {
             }
         });
 
+        btn1.setBackground(new java.awt.Color(245, 133, 25));
+        btn1.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        btn1.setForeground(new java.awt.Color(91, 52, 46));
         btn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn1ActionPerformed(evt);
             }
         });
 
+        btn2.setBackground(new java.awt.Color(245, 133, 25));
+        btn2.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        btn2.setForeground(new java.awt.Color(91, 52, 46));
         btn2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn2ActionPerformed(evt);
@@ -202,32 +232,55 @@ public class FmPrincipal extends javax.swing.JFrame {
             .addGroup(jPanelOrdenLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanelOrdenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tbtnHotdogs)
-                    .addComponent(btn1))
-                .addGap(12, 12, 12)
-                .addGroup(jPanelOrdenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn2)
-                    .addComponent(tbtnBebidas))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbtnExtras)
-                .addContainerGap(186, Short.MAX_VALUE))
+                    .addGroup(jPanelOrdenLayout.createSequentialGroup()
+                        .addComponent(tbtnHotdogs)
+                        .addGap(10, 10, 10)
+                        .addComponent(tbtnBebidas)
+                        .addGap(18, 18, 18)
+                        .addComponent(tbtnExtras, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelOrdenLayout.createSequentialGroup()
+                        .addComponent(btn1)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn2)))
+                .addContainerGap(538, Short.MAX_VALUE))
         );
         jPanelOrdenLayout.setVerticalGroup(
             jPanelOrdenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelOrdenLayout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addGroup(jPanelOrdenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tbtnHotdogs)
-                    .addComponent(tbtnBebidas)
-                    .addComponent(tbtnExtras))
-                .addGap(18, 18, 18)
+                    .addComponent(tbtnHotdogs, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tbtnBebidas, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tbtnExtras, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(48, 48, 48)
                 .addGroup(jPanelOrdenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn1)
-                    .addComponent(btn2))
-                .addContainerGap(372, Short.MAX_VALUE))
+                    .addComponent(btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanelOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, 500, 460));
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addComponent(jPanelRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanelOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelRecibo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelOrden, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 730));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -306,10 +359,11 @@ public class FmPrincipal extends javax.swing.JFrame {
         guardarOrdenHasPlatillos(orden);
     }
 
-    public void guardarOrdenHasPlatillos2(Orden orden, OrdenHasPlatillo ordenHasPlatillos) {
+    public void guardarOrdenHasPlatillos2(Orden orden, OrdenHasPlatillo ordenHasPlatillos, List<OrdenHasPlatillo> ordHasList) {
         OrdenHasPlatilloJpaController cOrdenHasPlatillo = new OrdenHasPlatilloJpaController();
         ordenHasPlatillos.setCantidad(1);
         ordenHasPlatillos.setOrden(orden);
+        orden.setOrdenHasPlatilloList(ordHasList);
 
         try {
             cOrdenHasPlatillo.create(ordenHasPlatillos);
@@ -327,13 +381,15 @@ public class FmPrincipal extends javax.swing.JFrame {
         for (int i = 0; i < platillosBD.size(); i++) {
 
             for (Platillo platillo : platillos) {
-                OrdenHasPlatillo ordenHasPlatillos = new OrdenHasPlatillo();
+
                 if (platillo.getNombre().equalsIgnoreCase(platillosBD.get(i).getNombre())) {
-                    ordenHasPlatillos.setPlatillo(platillosBD.get(0));
+                    OrdenHasPlatillo ordenHasPlatillos = new OrdenHasPlatillo();
+                    ordenHasPlatillos.setPlatillo(platillosBD.get(i));
                     platillos2.add(ordenHasPlatillos);
                     ordenHasPlatillos.setPrecio(platillo.getCosto());
                     ordenHasPlatillos.setNotas(platillo.toString());
-                    guardarOrdenHasPlatillos2(orden, ordenHasPlatillos);
+                    platillos2.add(ordenHasPlatillos);
+                    guardarOrdenHasPlatillos2(orden, ordenHasPlatillos, platillos2);
                 }
 
             }
@@ -341,6 +397,7 @@ public class FmPrincipal extends javax.swing.JFrame {
         }
 
     }
+
 
     public void notasOrden(Platillo platillo) {
 
@@ -391,6 +448,7 @@ public class FmPrincipal extends javax.swing.JFrame {
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
     private javax.swing.JFrame jFrame3;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelOrden;
     private javax.swing.JPanel jPanelRecibo;
     private javax.swing.JScrollPane jScrollPane1;
