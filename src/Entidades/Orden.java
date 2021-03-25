@@ -23,8 +23,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+//import javax.xml.bind.annotation.XmlRootElement;
+//import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "orden")
-@XmlRootElement
+//@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Orden.findAll", query = "SELECT o FROM Orden o")
     , @NamedQuery(name = "Orden.findByIdorden", query = "SELECT o FROM Orden o WHERE o.idorden = :idorden")
@@ -104,7 +104,7 @@ public class Orden implements Serializable {
         this.idusuario = idusuario;
     }
 
-    @XmlTransient
+    //@XmlTransient
     public List<OrdenHasPlatillo> getOrdenHasPlatilloList() {
         return ordenHasPlatilloList;
     }

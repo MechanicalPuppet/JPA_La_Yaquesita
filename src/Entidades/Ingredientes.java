@@ -19,8 +19,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+//import javax.xml.bind.annotation.XmlRootElement;
+//import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "ingredientes")
-@XmlRootElement
+//@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Ingredientes.findAll", query = "SELECT i FROM Ingredientes i")
     , @NamedQuery(name = "Ingredientes.findByIdingredientes", query = "SELECT i FROM Ingredientes i WHERE i.idingredientes = :idingredientes")
@@ -78,7 +78,7 @@ public class Ingredientes implements Serializable {
         this.nombre = nombre;
     }
 
-    @XmlTransient
+    //@XmlTransient
     public List<Platillo> getPlatilloList() {
         return platilloList;
     }

@@ -7,22 +7,26 @@ package Vistas;
 
 import Vistas.Paneles.PanelOrden;
 import Vistas.Paneles.TabbedPanelMenu;
+import javax.swing.JDialog;
 
 /**
  *
  * @author Jbran
  */
 public class FmPrincipal extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form NewJFrame
      */
     public FmPrincipal() {
 
-        this.add(new PanelOrden());
-        this.add(new TabbedPanelMenu());
+        //this.add(new PanelOrden());
+        //this.add(new TabbedPanelMenu());
         initComponents();
         this.setSize(1920, 1080);
+        tbtnHotdogs.setSelected(true);
+        btn1.setText("Yaqui");
+        btn2.setText("Cuate");
         //panelPrincipal.add(new Panel(Vistas.Paneles.panelMenu));
     }
 
@@ -38,6 +42,17 @@ public class FmPrincipal extends javax.swing.JFrame {
         jFrame1 = new javax.swing.JFrame();
         jFrame2 = new javax.swing.JFrame();
         jFrame3 = new javax.swing.JFrame();
+        jPanelRecibo = new javax.swing.JPanel();
+        jlblOrden = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTablaPlatillos = new javax.swing.JTable();
+        btnSiguiente = new javax.swing.JButton();
+        jPanelOrden = new javax.swing.JPanel();
+        tbtnHotdogs = new javax.swing.JToggleButton();
+        tbtnBebidas = new javax.swing.JToggleButton();
+        tbtnExtras = new javax.swing.JToggleButton();
+        btn1 = new javax.swing.JButton();
+        btn2 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -75,8 +90,152 @@ public class FmPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jlblOrden.setText("Orden: 001");
+
+        jTablaPlatillos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane1.setViewportView(jTablaPlatillos);
+
+        btnSiguiente.setText("Siguiente");
+
+        javax.swing.GroupLayout jPanelReciboLayout = new javax.swing.GroupLayout(jPanelRecibo);
+        jPanelRecibo.setLayout(jPanelReciboLayout);
+        jPanelReciboLayout.setHorizontalGroup(
+            jPanelReciboLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelReciboLayout.createSequentialGroup()
+                .addGroup(jPanelReciboLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelReciboLayout.createSequentialGroup()
+                        .addGroup(jPanelReciboLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelReciboLayout.createSequentialGroup()
+                                .addGap(100, 100, 100)
+                                .addComponent(jlblOrden))
+                            .addGroup(jPanelReciboLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 1, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelReciboLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSiguiente)))
+                .addContainerGap())
+        );
+        jPanelReciboLayout.setVerticalGroup(
+            jPanelReciboLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelReciboLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jlblOrden)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(btnSiguiente)
+                .addGap(22, 22, 22))
+        );
+
+        getContentPane().add(jPanelRecibo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 290, 460));
+
+        tbtnHotdogs.setText("HotDogs");
+        tbtnHotdogs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbtnHotdogsActionPerformed(evt);
+            }
+        });
+
+        tbtnBebidas.setText("Bebidas");
+        tbtnBebidas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbtnBebidasActionPerformed(evt);
+            }
+        });
+
+        tbtnExtras.setText("Extras");
+        tbtnExtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbtnExtrasActionPerformed(evt);
+            }
+        });
+
+        btn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelOrdenLayout = new javax.swing.GroupLayout(jPanelOrden);
+        jPanelOrden.setLayout(jPanelOrdenLayout);
+        jPanelOrdenLayout.setHorizontalGroup(
+            jPanelOrdenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelOrdenLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(jPanelOrdenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tbtnHotdogs)
+                    .addComponent(btn1))
+                .addGap(12, 12, 12)
+                .addGroup(jPanelOrdenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn2)
+                    .addComponent(tbtnBebidas))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(tbtnExtras)
+                .addContainerGap(186, Short.MAX_VALUE))
+        );
+        jPanelOrdenLayout.setVerticalGroup(
+            jPanelOrdenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelOrdenLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(jPanelOrdenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tbtnHotdogs)
+                    .addComponent(tbtnBebidas)
+                    .addComponent(tbtnExtras))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelOrdenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn1)
+                    .addComponent(btn2))
+                .addContainerGap(355, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanelOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, 500, 460));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tbtnHotdogsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbtnHotdogsActionPerformed
+        tbtnHotdogs.setSelected(true);
+        tbtnExtras.setSelected(false);
+        tbtnBebidas.setSelected(false);
+        
+        btn1.setText("Yaqui");
+        btn2.setText("Cuate");
+    }//GEN-LAST:event_tbtnHotdogsActionPerformed
+
+    private void tbtnBebidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbtnBebidasActionPerformed
+        tbtnHotdogs.setSelected(false);
+        tbtnExtras.setSelected(false);
+        tbtnBebidas.setSelected(true);
+        btn1.setText("Coca L");
+        btn2.setText("Coca B");
+    }//GEN-LAST:event_tbtnBebidasActionPerformed
+
+    private void tbtnExtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbtnExtrasActionPerformed
+        tbtnHotdogs.setSelected(false);
+        tbtnExtras.setSelected(true);
+        tbtnBebidas.setSelected(false);
+        btn1.setText("Queso de Nacho");
+        btn2.setText("Salsa Valiente");
+    }//GEN-LAST:event_tbtnExtrasActionPerformed
+
+    private void btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1ActionPerformed
+        if(btn1.getText().equalsIgnoreCase("Yaqui")){
+            JDialog yaqui = new Yaqui(this, true);
+            yaqui.setVisible(true);
+        }
+    }//GEN-LAST:event_btn1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -115,8 +274,19 @@ public class FmPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn1;
+    private javax.swing.JButton btn2;
+    private javax.swing.JButton btnSiguiente;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
     private javax.swing.JFrame jFrame3;
+    private javax.swing.JPanel jPanelOrden;
+    private javax.swing.JPanel jPanelRecibo;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTablaPlatillos;
+    private javax.swing.JLabel jlblOrden;
+    private javax.swing.JToggleButton tbtnBebidas;
+    private javax.swing.JToggleButton tbtnExtras;
+    private javax.swing.JToggleButton tbtnHotdogs;
     // End of variables declaration//GEN-END:variables
 }
