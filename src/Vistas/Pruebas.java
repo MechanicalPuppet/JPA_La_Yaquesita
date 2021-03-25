@@ -40,23 +40,24 @@ public  class Pruebas {
    Orden orden = new Orden();
    orden.setFecha(new Date());
    orden.setIdusuario(usuario);   
-   orden.setTotal(30f);
+   orden.setTotal(190f);
  
    //Inserción en la base de datos
-//   COrden.create(orden);
+   //COrden.create(orden);
    
    //Llenado de datos en una variable para probar el actualizar
-   Orden edit = new Orden(2);
+   Orden edit = new Orden(5);
    edit.setFecha(new Date());
    edit.setIdusuario(usuarios.get(0));
-   edit.setTotal(40f);
-   edit.setPlatilloList(new ArrayList<Platillo>());
+   edit.setTotal(200f);
+   
+   
    
    //Se prueba el actualizar
-//   COrden.edit(edit);
+   //COrden.edit(edit);
    
    //Procederemos a eliminar la primera orden que creamos.
-//      COrden.destroy(7); //Borrar por medio de ID
+    //  COrden.destroy(8); //Borrar por medio de ID
 
     
     //Impresión de todas las órdenes que tenemos guardadas.

@@ -8,6 +8,7 @@ package Entidades;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -54,9 +56,9 @@ public class Platillo implements Serializable {
     @Column(name = "costo")
     private float costo;
     @ManyToMany(mappedBy = "platilloList")
-    private List<Orden> ordenList;
-    @ManyToMany(mappedBy = "platilloList")
     private List<Ingredientes> ingredientesList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "platillo")
+    private List<OrdenHasPlatillo> ordenHasPlatilloList;
 
     public Platillo() {
     }
@@ -113,21 +115,21 @@ public class Platillo implements Serializable {
     }
 
     @XmlTransient
-    public List<Orden> getOrdenList() {
-        return ordenList;
-    }
-
-    public void setOrdenList(List<Orden> ordenList) {
-        this.ordenList = ordenList;
-    }
-
-    @XmlTransient
     public List<Ingredientes> getIngredientesList() {
         return ingredientesList;
     }
 
     public void setIngredientesList(List<Ingredientes> ingredientesList) {
         this.ingredientesList = ingredientesList;
+    }
+
+    @XmlTransient
+    public List<OrdenHasPlatillo> getOrdenHasPlatilloList() {
+        return ordenHasPlatilloList;
+    }
+
+    public void setOrdenHasPlatilloList(List<OrdenHasPlatillo> ordenHasPlatilloList) {
+        this.ordenHasPlatilloList = ordenHasPlatilloList;
     }
 
     @Override

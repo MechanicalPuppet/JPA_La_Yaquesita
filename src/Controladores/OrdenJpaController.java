@@ -5,6 +5,7 @@
  */
 package Controladores;
 
+import Controladores.exceptions.IllegalOrphanException;
 import Controladores.exceptions.NonexistentEntityException;
 import Entidades.Orden;
 import java.io.Serializable;
@@ -13,7 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import Entidades.Usuarios;
-import Entidades.Platillo;
+import Entidades.OrdenHasPlatillo;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -36,8 +37,8 @@ public class OrdenJpaController implements Serializable {
     }
 
     public void create(Orden orden) {
-        if (orden.getPlatilloList() == null) {
-            orden.setPlatilloList(new ArrayList<Platillo>());
+        if (orden.getOrdenHasPlatilloList() == null) {
+            orden.setOrdenHasPlatilloList(new ArrayList<OrdenHasPlatillo>());
         }
         EntityManager em = null;
         try {
@@ -48,20 +49,25 @@ public class OrdenJpaController implements Serializable {
                 idusuario = em.getReference(idusuario.getClass(), idusuario.getIdusuario());
                 orden.setIdusuario(idusuario);
             }
-            List<Platillo> attachedPlatilloList = new ArrayList<Platillo>();
-            for (Platillo platilloListPlatilloToAttach : orden.getPlatilloList()) {
-                platilloListPlatilloToAttach = em.getReference(platilloListPlatilloToAttach.getClass(), platilloListPlatilloToAttach.getIdplatillo());
-                attachedPlatilloList.add(platilloListPlatilloToAttach);
+            List<OrdenHasPlatillo> attachedOrdenHasPlatilloList = new ArrayList<OrdenHasPlatillo>();
+            for (OrdenHasPlatillo ordenHasPlatilloListOrdenHasPlatilloToAttach : orden.getOrdenHasPlatilloList()) {
+                ordenHasPlatilloListOrdenHasPlatilloToAttach = em.getReference(ordenHasPlatilloListOrdenHasPlatilloToAttach.getClass(), ordenHasPlatilloListOrdenHasPlatilloToAttach.getOrdenHasPlatilloPK());
+                attachedOrdenHasPlatilloList.add(ordenHasPlatilloListOrdenHasPlatilloToAttach);
             }
-            orden.setPlatilloList(attachedPlatilloList);
+            orden.setOrdenHasPlatilloList(attachedOrdenHasPlatilloList);
             em.persist(orden);
             if (idusuario != null) {
                 idusuario.getOrdenList().add(orden);
                 idusuario = em.merge(idusuario);
             }
-            for (Platillo platilloListPlatillo : orden.getPlatilloList()) {
-                platilloListPlatillo.getOrdenList().add(orden);
-                platilloListPlatillo = em.merge(platilloListPlatillo);
+            for (OrdenHasPlatillo ordenHasPlatilloListOrdenHasPlatillo : orden.getOrdenHasPlatilloList()) {
+                Orden oldOrdenOfOrdenHasPlatilloListOrdenHasPlatillo = ordenHasPlatilloListOrdenHasPlatillo.getOrden();
+                ordenHasPlatilloListOrdenHasPlatillo.setOrden(orden);
+                ordenHasPlatilloListOrdenHasPlatillo = em.merge(ordenHasPlatilloListOrdenHasPlatillo);
+                if (oldOrdenOfOrdenHasPlatilloListOrdenHasPlatillo != null) {
+                    oldOrdenOfOrdenHasPlatilloListOrdenHasPlatillo.getOrdenHasPlatilloList().remove(ordenHasPlatilloListOrdenHasPlatillo);
+                    oldOrdenOfOrdenHasPlatilloListOrdenHasPlatillo = em.merge(oldOrdenOfOrdenHasPlatilloListOrdenHasPlatillo);
+                }
             }
             em.getTransaction().commit();
         } finally {
@@ -71,7 +77,7 @@ public class OrdenJpaController implements Serializable {
         }
     }
 
-    public void edit(Orden orden) throws NonexistentEntityException, Exception {
+    public void edit(Orden orden) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -79,19 +85,31 @@ public class OrdenJpaController implements Serializable {
             Orden persistentOrden = em.find(Orden.class, orden.getIdorden());
             Usuarios idusuarioOld = persistentOrden.getIdusuario();
             Usuarios idusuarioNew = orden.getIdusuario();
-            List<Platillo> platilloListOld = persistentOrden.getPlatilloList();
-            List<Platillo> platilloListNew = orden.getPlatilloList();
+            List<OrdenHasPlatillo> ordenHasPlatilloListOld = persistentOrden.getOrdenHasPlatilloList();
+            List<OrdenHasPlatillo> ordenHasPlatilloListNew = orden.getOrdenHasPlatilloList();
+            List<String> illegalOrphanMessages = null;
+            for (OrdenHasPlatillo ordenHasPlatilloListOldOrdenHasPlatillo : ordenHasPlatilloListOld) {
+                if (!ordenHasPlatilloListNew.contains(ordenHasPlatilloListOldOrdenHasPlatillo)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain OrdenHasPlatillo " + ordenHasPlatilloListOldOrdenHasPlatillo + " since its orden field is not nullable.");
+                }
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
             if (idusuarioNew != null) {
                 idusuarioNew = em.getReference(idusuarioNew.getClass(), idusuarioNew.getIdusuario());
                 orden.setIdusuario(idusuarioNew);
             }
-            List<Platillo> attachedPlatilloListNew = new ArrayList<Platillo>();
-            for (Platillo platilloListNewPlatilloToAttach : platilloListNew) {
-                platilloListNewPlatilloToAttach = em.getReference(platilloListNewPlatilloToAttach.getClass(), platilloListNewPlatilloToAttach.getIdplatillo());
-                attachedPlatilloListNew.add(platilloListNewPlatilloToAttach);
+            List<OrdenHasPlatillo> attachedOrdenHasPlatilloListNew = new ArrayList<OrdenHasPlatillo>();
+            for (OrdenHasPlatillo ordenHasPlatilloListNewOrdenHasPlatilloToAttach : ordenHasPlatilloListNew) {
+                ordenHasPlatilloListNewOrdenHasPlatilloToAttach = em.getReference(ordenHasPlatilloListNewOrdenHasPlatilloToAttach.getClass(), ordenHasPlatilloListNewOrdenHasPlatilloToAttach.getOrdenHasPlatilloPK());
+                attachedOrdenHasPlatilloListNew.add(ordenHasPlatilloListNewOrdenHasPlatilloToAttach);
             }
-            platilloListNew = attachedPlatilloListNew;
-            orden.setPlatilloList(platilloListNew);
+            ordenHasPlatilloListNew = attachedOrdenHasPlatilloListNew;
+            orden.setOrdenHasPlatilloList(ordenHasPlatilloListNew);
             orden = em.merge(orden);
             if (idusuarioOld != null && !idusuarioOld.equals(idusuarioNew)) {
                 idusuarioOld.getOrdenList().remove(orden);
@@ -101,16 +119,15 @@ public class OrdenJpaController implements Serializable {
                 idusuarioNew.getOrdenList().add(orden);
                 idusuarioNew = em.merge(idusuarioNew);
             }
-            for (Platillo platilloListOldPlatillo : platilloListOld) {
-                if (!platilloListNew.contains(platilloListOldPlatillo)) {
-                    platilloListOldPlatillo.getOrdenList().remove(orden);
-                    platilloListOldPlatillo = em.merge(platilloListOldPlatillo);
-                }
-            }
-            for (Platillo platilloListNewPlatillo : platilloListNew) {
-                if (!platilloListOld.contains(platilloListNewPlatillo)) {
-                    platilloListNewPlatillo.getOrdenList().add(orden);
-                    platilloListNewPlatillo = em.merge(platilloListNewPlatillo);
+            for (OrdenHasPlatillo ordenHasPlatilloListNewOrdenHasPlatillo : ordenHasPlatilloListNew) {
+                if (!ordenHasPlatilloListOld.contains(ordenHasPlatilloListNewOrdenHasPlatillo)) {
+                    Orden oldOrdenOfOrdenHasPlatilloListNewOrdenHasPlatillo = ordenHasPlatilloListNewOrdenHasPlatillo.getOrden();
+                    ordenHasPlatilloListNewOrdenHasPlatillo.setOrden(orden);
+                    ordenHasPlatilloListNewOrdenHasPlatillo = em.merge(ordenHasPlatilloListNewOrdenHasPlatillo);
+                    if (oldOrdenOfOrdenHasPlatilloListNewOrdenHasPlatillo != null && !oldOrdenOfOrdenHasPlatilloListNewOrdenHasPlatillo.equals(orden)) {
+                        oldOrdenOfOrdenHasPlatilloListNewOrdenHasPlatillo.getOrdenHasPlatilloList().remove(ordenHasPlatilloListNewOrdenHasPlatillo);
+                        oldOrdenOfOrdenHasPlatilloListNewOrdenHasPlatillo = em.merge(oldOrdenOfOrdenHasPlatilloListNewOrdenHasPlatillo);
+                    }
                 }
             }
             em.getTransaction().commit();
@@ -130,7 +147,7 @@ public class OrdenJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException {
+    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -142,15 +159,21 @@ public class OrdenJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The orden with id " + id + " no longer exists.", enfe);
             }
+            List<String> illegalOrphanMessages = null;
+            List<OrdenHasPlatillo> ordenHasPlatilloListOrphanCheck = orden.getOrdenHasPlatilloList();
+            for (OrdenHasPlatillo ordenHasPlatilloListOrphanCheckOrdenHasPlatillo : ordenHasPlatilloListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Orden (" + orden + ") cannot be destroyed since the OrdenHasPlatillo " + ordenHasPlatilloListOrphanCheckOrdenHasPlatillo + " in its ordenHasPlatilloList field has a non-nullable orden field.");
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
             Usuarios idusuario = orden.getIdusuario();
             if (idusuario != null) {
                 idusuario.getOrdenList().remove(orden);
                 idusuario = em.merge(idusuario);
-            }
-            List<Platillo> platilloList = orden.getPlatilloList();
-            for (Platillo platilloListPlatillo : platilloList) {
-                platilloListPlatillo.getOrdenList().remove(orden);
-                platilloListPlatillo = em.merge(platilloListPlatillo);
             }
             em.remove(orden);
             em.getTransaction().commit();

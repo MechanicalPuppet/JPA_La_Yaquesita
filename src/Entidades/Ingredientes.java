@@ -32,8 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Ingredientes.findAll", query = "SELECT i FROM Ingredientes i")
     , @NamedQuery(name = "Ingredientes.findByIdingredientes", query = "SELECT i FROM Ingredientes i WHERE i.idingredientes = :idingredientes")
-    , @NamedQuery(name = "Ingredientes.findByNombre", query = "SELECT i FROM Ingredientes i WHERE i.nombre = :nombre")
-    , @NamedQuery(name = "Ingredientes.findByIncluido", query = "SELECT i FROM Ingredientes i WHERE i.incluido = :incluido")})
+    , @NamedQuery(name = "Ingredientes.findByNombre", query = "SELECT i FROM Ingredientes i WHERE i.nombre = :nombre")})
 public class Ingredientes implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,9 +44,6 @@ public class Ingredientes implements Serializable {
     @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
-    @Basic(optional = false)
-    @Column(name = "incluido")
-    private short incluido;
     @JoinTable(name = "platillo_has_ingredientes", joinColumns = {
         @JoinColumn(name = "ingredientes_idingredientes", referencedColumnName = "idingredientes")}, inverseJoinColumns = {
         @JoinColumn(name = "platillo_idplatillo", referencedColumnName = "idplatillo")})
@@ -61,10 +57,9 @@ public class Ingredientes implements Serializable {
         this.idingredientes = idingredientes;
     }
 
-    public Ingredientes(Integer idingredientes, String nombre, short incluido) {
+    public Ingredientes(Integer idingredientes, String nombre) {
         this.idingredientes = idingredientes;
         this.nombre = nombre;
-        this.incluido = incluido;
     }
 
     public Integer getIdingredientes() {
@@ -81,14 +76,6 @@ public class Ingredientes implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public short getIncluido() {
-        return incluido;
-    }
-
-    public void setIncluido(short incluido) {
-        this.incluido = incluido;
     }
 
     @XmlTransient

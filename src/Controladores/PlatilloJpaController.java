@@ -5,16 +5,17 @@
  */
 package Controladores;
 
+import Controladores.exceptions.IllegalOrphanException;
 import Controladores.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import Entidades.Orden;
+import Entidades.Ingredientes;
 import java.util.ArrayList;
 import java.util.List;
-import Entidades.Ingredientes;
+import Entidades.OrdenHasPlatillo;
 import Entidades.Platillo;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -36,36 +37,41 @@ public class PlatilloJpaController implements Serializable {
     }
 
     public void create(Platillo platillo) {
-        if (platillo.getOrdenList() == null) {
-            platillo.setOrdenList(new ArrayList<Orden>());
-        }
         if (platillo.getIngredientesList() == null) {
             platillo.setIngredientesList(new ArrayList<Ingredientes>());
+        }
+        if (platillo.getOrdenHasPlatilloList() == null) {
+            platillo.setOrdenHasPlatilloList(new ArrayList<OrdenHasPlatillo>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            List<Orden> attachedOrdenList = new ArrayList<Orden>();
-            for (Orden ordenListOrdenToAttach : platillo.getOrdenList()) {
-                ordenListOrdenToAttach = em.getReference(ordenListOrdenToAttach.getClass(), ordenListOrdenToAttach.getIdorden());
-                attachedOrdenList.add(ordenListOrdenToAttach);
-            }
-            platillo.setOrdenList(attachedOrdenList);
             List<Ingredientes> attachedIngredientesList = new ArrayList<Ingredientes>();
             for (Ingredientes ingredientesListIngredientesToAttach : platillo.getIngredientesList()) {
                 ingredientesListIngredientesToAttach = em.getReference(ingredientesListIngredientesToAttach.getClass(), ingredientesListIngredientesToAttach.getIdingredientes());
                 attachedIngredientesList.add(ingredientesListIngredientesToAttach);
             }
             platillo.setIngredientesList(attachedIngredientesList);
-            em.persist(platillo);
-            for (Orden ordenListOrden : platillo.getOrdenList()) {
-                ordenListOrden.getPlatilloList().add(platillo);
-                ordenListOrden = em.merge(ordenListOrden);
+            List<OrdenHasPlatillo> attachedOrdenHasPlatilloList = new ArrayList<OrdenHasPlatillo>();
+            for (OrdenHasPlatillo ordenHasPlatilloListOrdenHasPlatilloToAttach : platillo.getOrdenHasPlatilloList()) {
+                ordenHasPlatilloListOrdenHasPlatilloToAttach = em.getReference(ordenHasPlatilloListOrdenHasPlatilloToAttach.getClass(), ordenHasPlatilloListOrdenHasPlatilloToAttach.getOrdenHasPlatilloPK());
+                attachedOrdenHasPlatilloList.add(ordenHasPlatilloListOrdenHasPlatilloToAttach);
             }
+            platillo.setOrdenHasPlatilloList(attachedOrdenHasPlatilloList);
+            em.persist(platillo);
             for (Ingredientes ingredientesListIngredientes : platillo.getIngredientesList()) {
                 ingredientesListIngredientes.getPlatilloList().add(platillo);
                 ingredientesListIngredientes = em.merge(ingredientesListIngredientes);
+            }
+            for (OrdenHasPlatillo ordenHasPlatilloListOrdenHasPlatillo : platillo.getOrdenHasPlatilloList()) {
+                Platillo oldPlatilloOfOrdenHasPlatilloListOrdenHasPlatillo = ordenHasPlatilloListOrdenHasPlatillo.getPlatillo();
+                ordenHasPlatilloListOrdenHasPlatillo.setPlatillo(platillo);
+                ordenHasPlatilloListOrdenHasPlatillo = em.merge(ordenHasPlatilloListOrdenHasPlatillo);
+                if (oldPlatilloOfOrdenHasPlatilloListOrdenHasPlatillo != null) {
+                    oldPlatilloOfOrdenHasPlatilloListOrdenHasPlatillo.getOrdenHasPlatilloList().remove(ordenHasPlatilloListOrdenHasPlatillo);
+                    oldPlatilloOfOrdenHasPlatilloListOrdenHasPlatillo = em.merge(oldPlatilloOfOrdenHasPlatilloListOrdenHasPlatillo);
+                }
             }
             em.getTransaction().commit();
         } finally {
@@ -75,23 +81,28 @@ public class PlatilloJpaController implements Serializable {
         }
     }
 
-    public void edit(Platillo platillo) throws NonexistentEntityException, Exception {
+    public void edit(Platillo platillo) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             Platillo persistentPlatillo = em.find(Platillo.class, platillo.getIdplatillo());
-            List<Orden> ordenListOld = persistentPlatillo.getOrdenList();
-            List<Orden> ordenListNew = platillo.getOrdenList();
             List<Ingredientes> ingredientesListOld = persistentPlatillo.getIngredientesList();
             List<Ingredientes> ingredientesListNew = platillo.getIngredientesList();
-            List<Orden> attachedOrdenListNew = new ArrayList<Orden>();
-            for (Orden ordenListNewOrdenToAttach : ordenListNew) {
-                ordenListNewOrdenToAttach = em.getReference(ordenListNewOrdenToAttach.getClass(), ordenListNewOrdenToAttach.getIdorden());
-                attachedOrdenListNew.add(ordenListNewOrdenToAttach);
+            List<OrdenHasPlatillo> ordenHasPlatilloListOld = persistentPlatillo.getOrdenHasPlatilloList();
+            List<OrdenHasPlatillo> ordenHasPlatilloListNew = platillo.getOrdenHasPlatilloList();
+            List<String> illegalOrphanMessages = null;
+            for (OrdenHasPlatillo ordenHasPlatilloListOldOrdenHasPlatillo : ordenHasPlatilloListOld) {
+                if (!ordenHasPlatilloListNew.contains(ordenHasPlatilloListOldOrdenHasPlatillo)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain OrdenHasPlatillo " + ordenHasPlatilloListOldOrdenHasPlatillo + " since its platillo field is not nullable.");
+                }
             }
-            ordenListNew = attachedOrdenListNew;
-            platillo.setOrdenList(ordenListNew);
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
             List<Ingredientes> attachedIngredientesListNew = new ArrayList<Ingredientes>();
             for (Ingredientes ingredientesListNewIngredientesToAttach : ingredientesListNew) {
                 ingredientesListNewIngredientesToAttach = em.getReference(ingredientesListNewIngredientesToAttach.getClass(), ingredientesListNewIngredientesToAttach.getIdingredientes());
@@ -99,19 +110,14 @@ public class PlatilloJpaController implements Serializable {
             }
             ingredientesListNew = attachedIngredientesListNew;
             platillo.setIngredientesList(ingredientesListNew);
+            List<OrdenHasPlatillo> attachedOrdenHasPlatilloListNew = new ArrayList<OrdenHasPlatillo>();
+            for (OrdenHasPlatillo ordenHasPlatilloListNewOrdenHasPlatilloToAttach : ordenHasPlatilloListNew) {
+                ordenHasPlatilloListNewOrdenHasPlatilloToAttach = em.getReference(ordenHasPlatilloListNewOrdenHasPlatilloToAttach.getClass(), ordenHasPlatilloListNewOrdenHasPlatilloToAttach.getOrdenHasPlatilloPK());
+                attachedOrdenHasPlatilloListNew.add(ordenHasPlatilloListNewOrdenHasPlatilloToAttach);
+            }
+            ordenHasPlatilloListNew = attachedOrdenHasPlatilloListNew;
+            platillo.setOrdenHasPlatilloList(ordenHasPlatilloListNew);
             platillo = em.merge(platillo);
-            for (Orden ordenListOldOrden : ordenListOld) {
-                if (!ordenListNew.contains(ordenListOldOrden)) {
-                    ordenListOldOrden.getPlatilloList().remove(platillo);
-                    ordenListOldOrden = em.merge(ordenListOldOrden);
-                }
-            }
-            for (Orden ordenListNewOrden : ordenListNew) {
-                if (!ordenListOld.contains(ordenListNewOrden)) {
-                    ordenListNewOrden.getPlatilloList().add(platillo);
-                    ordenListNewOrden = em.merge(ordenListNewOrden);
-                }
-            }
             for (Ingredientes ingredientesListOldIngredientes : ingredientesListOld) {
                 if (!ingredientesListNew.contains(ingredientesListOldIngredientes)) {
                     ingredientesListOldIngredientes.getPlatilloList().remove(platillo);
@@ -122,6 +128,17 @@ public class PlatilloJpaController implements Serializable {
                 if (!ingredientesListOld.contains(ingredientesListNewIngredientes)) {
                     ingredientesListNewIngredientes.getPlatilloList().add(platillo);
                     ingredientesListNewIngredientes = em.merge(ingredientesListNewIngredientes);
+                }
+            }
+            for (OrdenHasPlatillo ordenHasPlatilloListNewOrdenHasPlatillo : ordenHasPlatilloListNew) {
+                if (!ordenHasPlatilloListOld.contains(ordenHasPlatilloListNewOrdenHasPlatillo)) {
+                    Platillo oldPlatilloOfOrdenHasPlatilloListNewOrdenHasPlatillo = ordenHasPlatilloListNewOrdenHasPlatillo.getPlatillo();
+                    ordenHasPlatilloListNewOrdenHasPlatillo.setPlatillo(platillo);
+                    ordenHasPlatilloListNewOrdenHasPlatillo = em.merge(ordenHasPlatilloListNewOrdenHasPlatillo);
+                    if (oldPlatilloOfOrdenHasPlatilloListNewOrdenHasPlatillo != null && !oldPlatilloOfOrdenHasPlatilloListNewOrdenHasPlatillo.equals(platillo)) {
+                        oldPlatilloOfOrdenHasPlatilloListNewOrdenHasPlatillo.getOrdenHasPlatilloList().remove(ordenHasPlatilloListNewOrdenHasPlatillo);
+                        oldPlatilloOfOrdenHasPlatilloListNewOrdenHasPlatillo = em.merge(oldPlatilloOfOrdenHasPlatilloListNewOrdenHasPlatillo);
+                    }
                 }
             }
             em.getTransaction().commit();
@@ -141,7 +158,7 @@ public class PlatilloJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException {
+    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -153,10 +170,16 @@ public class PlatilloJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The platillo with id " + id + " no longer exists.", enfe);
             }
-            List<Orden> ordenList = platillo.getOrdenList();
-            for (Orden ordenListOrden : ordenList) {
-                ordenListOrden.getPlatilloList().remove(platillo);
-                ordenListOrden = em.merge(ordenListOrden);
+            List<String> illegalOrphanMessages = null;
+            List<OrdenHasPlatillo> ordenHasPlatilloListOrphanCheck = platillo.getOrdenHasPlatilloList();
+            for (OrdenHasPlatillo ordenHasPlatilloListOrphanCheckOrdenHasPlatillo : ordenHasPlatilloListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Platillo (" + platillo + ") cannot be destroyed since the OrdenHasPlatillo " + ordenHasPlatilloListOrphanCheckOrdenHasPlatillo + " in its ordenHasPlatilloList field has a non-nullable platillo field.");
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
             }
             List<Ingredientes> ingredientesList = platillo.getIngredientesList();
             for (Ingredientes ingredientesListIngredientes : ingredientesList) {
