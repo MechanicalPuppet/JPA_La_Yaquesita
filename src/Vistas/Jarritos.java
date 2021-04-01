@@ -43,7 +43,7 @@ public class Jarritos extends javax.swing.JDialog {
         List<Platillo> platillos = cPlatillo.findPlatilloEntities();
         for (Platillo platilloAux : platillos) {
            
-            if(platilloAux.getNombre().equalsIgnoreCase("Coca L")){
+            if(platilloAux.getNombre().equalsIgnoreCase("Jarritos")){
                 platillo = platilloAux;
                 break;
             }
