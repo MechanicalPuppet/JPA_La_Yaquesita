@@ -312,6 +312,9 @@ public class FmPrincipal extends javax.swing.JFrame {
             Yaqui yaqui = new Yaqui(this, true, this);
             yaqui.setVisible(true);
 
+        } else if(btn1.getText().equalsIgnoreCase("Coca L")){
+            CocaL cocaL = new CocaL(this, true, this);
+            cocaL.setVisible(true);
         }
     }//GEN-LAST:event_btn1ActionPerformed
 
@@ -319,6 +322,9 @@ public class FmPrincipal extends javax.swing.JFrame {
         if (btn2.getText().equalsIgnoreCase("Cuate")) {
             Cuate cuate = new Cuate(this, true, this);
             cuate.setVisible(true);
+        } else if (btn2.getText().equalsIgnoreCase("Jarritos")){
+            Jarritos jarritos = new Jarritos(this, true, this);
+            jarritos.setVisible(true);
         }
     }//GEN-LAST:event_btn2ActionPerformed
 
@@ -350,6 +356,11 @@ public class FmPrincipal extends javax.swing.JFrame {
 
         notasOrden = notasOrden.concat(platillo.toString() + "\n");
         txtArea.setText(notasOrden);
+    }
+    
+    public void notasOrden(String string){
+       notasOrden = notasOrden.concat(string + "\n");
+       txtArea.setText(notasOrden);
     }
 
     /**
