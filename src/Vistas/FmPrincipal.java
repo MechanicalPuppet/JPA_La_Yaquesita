@@ -14,6 +14,7 @@ import Entidades.Orden;
 import Entidades.OrdenHasPlatillo;
 import Entidades.Platillo;
 import Entidades.Usuarios;
+import FachadaLogica.FachadaLogica;
 import Vistas.Paneles.PanelOrden;
 import Vistas.Paneles.TabbedPanelMenu;
 import java.util.ArrayList;
@@ -31,9 +32,8 @@ public class FmPrincipal extends javax.swing.JFrame {
 
     String notasOrden;
     ArrayList<Platillo> platillos;
-    OrdenJpaController COrden;
-    UsuariosJpaController CUsuarios;
-    PlatilloJpaController cPlatillo;
+    FachadaLogica fachadaLogica;
+
 
     /**
      * Creates new form NewJFrame
@@ -49,11 +49,8 @@ public class FmPrincipal extends javax.swing.JFrame {
         btn2.setText("Cuate");
         notasOrden = "";
         platillos = new ArrayList<>();
-        COrden = new OrdenJpaController();
-        CUsuarios = new UsuariosJpaController();
-        cPlatillo = new PlatilloJpaController();
-        //cOrdenHasPlatillo = new OrdenHasPlatilloJpaController();
-        //panelPrincipal.add(new Panel(Vistas.Paneles.panelMenu));
+        fachadaLogica = new FachadaLogica();
+
     }
 
     /**
@@ -326,7 +323,7 @@ public class FmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btn2ActionPerformed
 
     private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
-        guardarOrden();
+        fachadaLogica.guardarOrden(this.platillos, this.notasOrden);
     }//GEN-LAST:event_btnSiguienteActionPerformed
 
     public ArrayList getPlatillos() {
@@ -343,60 +340,10 @@ public class FmPrincipal extends javax.swing.JFrame {
         return total;
     }
 
-    public void guardarOrden() {
-        List<Usuarios> usuarios = CUsuarios.findUsuariosEntities();
-        List<Platillo> platillos = cPlatillo.findPlatilloEntities();
-        Usuarios usuario = usuarios.get(0);
 
-        Orden orden = new Orden();
-        orden.setFecha(new Date());
-        orden.setIdusuario(usuario);
 
-        orden.setTotal(calcularOrden());
 
-        COrden.create(orden);
 
-        guardarOrdenHasPlatillos(orden);
-    }
-
-    public void guardarOrdenHasPlatillos2(Orden orden, OrdenHasPlatillo ordenHasPlatillos, List<OrdenHasPlatillo> ordHasList) {
-        OrdenHasPlatilloJpaController cOrdenHasPlatillo = new OrdenHasPlatilloJpaController();
-        ordenHasPlatillos.setCantidad(1);
-        ordenHasPlatillos.setOrden(orden);
-        orden.setOrdenHasPlatilloList(ordHasList);
-
-        try {
-            cOrdenHasPlatillo.create(ordenHasPlatillos);
-        } catch (Exception ex) {
-            System.out.println("Preexisting entity");
-        }
-    }
-
-    public void guardarOrdenHasPlatillos(Orden orden) {
-
-        List<Platillo> platillosBD = cPlatillo.findPlatilloEntities();
-        ArrayList<OrdenHasPlatillo> platillos2 = new ArrayList<>();
-        // ArrayList<Platillo> platillos = new ArrayList<>();
-
-        for (int i = 0; i < platillosBD.size(); i++) {
-
-            for (Platillo platillo : platillos) {
-
-                if (platillo.getNombre().equalsIgnoreCase(platillosBD.get(i).getNombre())) {
-                    OrdenHasPlatillo ordenHasPlatillos = new OrdenHasPlatillo();
-                    ordenHasPlatillos.setPlatillo(platillosBD.get(i));
-                    platillos2.add(ordenHasPlatillos);
-                    ordenHasPlatillos.setPrecio(platillo.getCosto());
-                    ordenHasPlatillos.setNotas(platillo.toString());
-                    platillos2.add(ordenHasPlatillos);
-                    guardarOrdenHasPlatillos2(orden, ordenHasPlatillos, platillos2);
-                }
-
-            }
-
-        }
-
-    }
 
 
     public void notasOrden(Platillo platillo) {
