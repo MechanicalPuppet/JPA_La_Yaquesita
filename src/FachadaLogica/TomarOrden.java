@@ -48,7 +48,8 @@ public class TomarOrden {
 
         Orden orden = new Orden();
         orden.setFecha(new Date());
-        orden.setIdusuario(usuario);
+        orden.setUsuarios(usuario); // Si truena es por esto. Desapareció el setIdUsuario
+//        orden.setIdusuario(usuario);
 
         orden.setTotal(calcularOrden());
 

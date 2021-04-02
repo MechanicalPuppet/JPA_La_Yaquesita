@@ -6,7 +6,6 @@
 package Controladores;
 
 import Controladores.exceptions.NonexistentEntityException;
-import Controladores.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -14,7 +13,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import Entidades.Orden;
 import Entidades.OrdenHasPlatillo;
-import Entidades.OrdenHasPlatilloPK;
 import Entidades.Platillo;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -36,12 +34,7 @@ public class OrdenHasPlatilloJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(OrdenHasPlatillo ordenHasPlatillo) throws PreexistingEntityException, Exception {
-        if (ordenHasPlatillo.getOrdenHasPlatilloPK() == null) {
-            ordenHasPlatillo.setOrdenHasPlatilloPK(new OrdenHasPlatilloPK());
-        }
-        ordenHasPlatillo.getOrdenHasPlatilloPK().setOrdenIdorden(ordenHasPlatillo.getOrden().getIdorden());
-        ordenHasPlatillo.getOrdenHasPlatilloPK().setPlatilloIdplatillo(ordenHasPlatillo.getPlatillo().getIdplatillo());
+    public void create(OrdenHasPlatillo ordenHasPlatillo) {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -66,11 +59,6 @@ public class OrdenHasPlatilloJpaController implements Serializable {
                 platillo = em.merge(platillo);
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findOrdenHasPlatillo(ordenHasPlatillo.getOrdenHasPlatilloPK()) != null) {
-                throw new PreexistingEntityException("OrdenHasPlatillo " + ordenHasPlatillo + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -79,13 +67,11 @@ public class OrdenHasPlatilloJpaController implements Serializable {
     }
 
     public void edit(OrdenHasPlatillo ordenHasPlatillo) throws NonexistentEntityException, Exception {
-        ordenHasPlatillo.getOrdenHasPlatilloPK().setOrdenIdorden(ordenHasPlatillo.getOrden().getIdorden());
-        ordenHasPlatillo.getOrdenHasPlatilloPK().setPlatilloIdplatillo(ordenHasPlatillo.getPlatillo().getIdplatillo());
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            OrdenHasPlatillo persistentOrdenHasPlatillo = em.find(OrdenHasPlatillo.class, ordenHasPlatillo.getOrdenHasPlatilloPK());
+            OrdenHasPlatillo persistentOrdenHasPlatillo = em.find(OrdenHasPlatillo.class, ordenHasPlatillo.getIdOrdenHasPlatillo());
             Orden ordenOld = persistentOrdenHasPlatillo.getOrden();
             Orden ordenNew = ordenHasPlatillo.getOrden();
             Platillo platilloOld = persistentOrdenHasPlatillo.getPlatillo();
@@ -119,7 +105,7 @@ public class OrdenHasPlatilloJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                OrdenHasPlatilloPK id = ordenHasPlatillo.getOrdenHasPlatilloPK();
+                Integer id = ordenHasPlatillo.getIdOrdenHasPlatillo();
                 if (findOrdenHasPlatillo(id) == null) {
                     throw new NonexistentEntityException("The ordenHasPlatillo with id " + id + " no longer exists.");
                 }
@@ -132,7 +118,7 @@ public class OrdenHasPlatilloJpaController implements Serializable {
         }
     }
 
-    public void destroy(OrdenHasPlatilloPK id) throws NonexistentEntityException {
+    public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -140,7 +126,7 @@ public class OrdenHasPlatilloJpaController implements Serializable {
             OrdenHasPlatillo ordenHasPlatillo;
             try {
                 ordenHasPlatillo = em.getReference(OrdenHasPlatillo.class, id);
-                ordenHasPlatillo.getOrdenHasPlatilloPK();
+                ordenHasPlatillo.getIdOrdenHasPlatillo();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The ordenHasPlatillo with id " + id + " no longer exists.", enfe);
             }
@@ -187,7 +173,7 @@ public class OrdenHasPlatilloJpaController implements Serializable {
         }
     }
 
-    public OrdenHasPlatillo findOrdenHasPlatillo(OrdenHasPlatilloPK id) {
+    public OrdenHasPlatillo findOrdenHasPlatillo(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(OrdenHasPlatillo.class, id);

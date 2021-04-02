@@ -19,8 +19,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-//import javax.xml.bind.annotation.XmlRootElement;
-//import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,7 +28,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "platillo")
-//@XmlRootElement
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Platillo.findAll", query = "SELECT p FROM Platillo p")
     , @NamedQuery(name = "Platillo.findByIdplatillo", query = "SELECT p FROM Platillo p WHERE p.idplatillo = :idplatillo")
@@ -114,7 +114,7 @@ public class Platillo implements Serializable {
         this.costo = costo;
     }
 
-    //@XmlTransient
+    @XmlTransient
     public List<Ingredientes> getIngredientesList() {
         return ingredientesList;
     }
@@ -123,7 +123,7 @@ public class Platillo implements Serializable {
         this.ingredientesList = ingredientesList;
     }
 
-    //@XmlTransient
+    @XmlTransient
     public List<OrdenHasPlatillo> getOrdenHasPlatilloList() {
         return ordenHasPlatilloList;
     }
@@ -154,21 +154,20 @@ public class Platillo implements Serializable {
 
     @Override
     public String toString() {
-        return nombre + "\t" +"$"+costo +" \n" +
-                formatIngredientes();
+        return nombre + "\t" + "$" + costo + " \n"
+                + formatIngredientes();
     }
 
     public String formatIngredientes() { // Brandon hizo el cambio a esto el 01/04/2021
         String ingredientes = "";
-        if(ingredientesList.size() == 11){
+        if (ingredientesList.size() == 11) {
             return "CT";
         } else {
-        for (Ingredientes ingrediente : ingredientesList) {
-            ingredientes = ingredientes.concat("\t" +ingrediente.getNombre() +"\n");
-        }
-        
-        return ingredientes;
-        }
-    }
+            for (Ingredientes ingrediente : ingredientesList) {
+                ingredientes = ingredientes.concat("\t" + ingrediente.getNombre() + "\n");
+            }
 
+        }
+        return ingredientes;
+    }
 }

@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -23,8 +24,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-//import javax.xml.bind.annotation.XmlRootElement;
-//import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,7 +33,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "orden")
-//@XmlRootElement
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Orden.findAll", query = "SELECT o FROM Orden o")
     , @NamedQuery(name = "Orden.findByIdorden", query = "SELECT o FROM Orden o WHERE o.idorden = :idorden")
@@ -53,9 +54,11 @@ public class Orden implements Serializable {
     @Basic(optional = false)
     @Column(name = "total")
     private float total;
-    @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
+    @JoinColumns({
+        @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
+        , @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")})
     @ManyToOne(optional = false)
-    private Usuarios idusuario;
+    private Usuarios usuarios;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orden")
     private List<OrdenHasPlatillo> ordenHasPlatilloList;
 
@@ -96,15 +99,15 @@ public class Orden implements Serializable {
         this.total = total;
     }
 
-    public Usuarios getIdusuario() {
-        return idusuario;
+    public Usuarios getUsuarios() {
+        return usuarios;
     }
 
-    public void setIdusuario(Usuarios idusuario) {
-        this.idusuario = idusuario;
+    public void setUsuarios(Usuarios usuarios) {
+        this.usuarios = usuarios;
     }
 
-    //@XmlTransient
+    @XmlTransient
     public List<OrdenHasPlatillo> getOrdenHasPlatilloList() {
         return ordenHasPlatilloList;
     }

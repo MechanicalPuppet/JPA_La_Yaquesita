@@ -44,7 +44,7 @@ public class Pruebas {
             //Creación de la orden y llenado de datos de la misma
             Orden orden = new Orden();
             orden.setFecha(new Date());
-            orden.setIdusuario(usuario);
+//            orden.setIdusuario(usuario);
 
             orden.setTotal(190f);
 
@@ -68,7 +68,7 @@ public class Pruebas {
             Orden edit = new Orden(5);
             edit.setFecha(new Date());
 
-            edit.setIdusuario(usuarios.get(0));
+//            edit.setIdusuario(usuarios.get(0));
             edit.setTotal(200f);
 
             //Se prueba el actualizar

@@ -55,7 +55,7 @@ public class PlatilloJpaController implements Serializable {
             platillo.setIngredientesList(attachedIngredientesList);
             List<OrdenHasPlatillo> attachedOrdenHasPlatilloList = new ArrayList<OrdenHasPlatillo>();
             for (OrdenHasPlatillo ordenHasPlatilloListOrdenHasPlatilloToAttach : platillo.getOrdenHasPlatilloList()) {
-                ordenHasPlatilloListOrdenHasPlatilloToAttach = em.getReference(ordenHasPlatilloListOrdenHasPlatilloToAttach.getClass(), ordenHasPlatilloListOrdenHasPlatilloToAttach.getOrdenHasPlatilloPK());
+                ordenHasPlatilloListOrdenHasPlatilloToAttach = em.getReference(ordenHasPlatilloListOrdenHasPlatilloToAttach.getClass(), ordenHasPlatilloListOrdenHasPlatilloToAttach.getIdOrdenHasPlatillo());
                 attachedOrdenHasPlatilloList.add(ordenHasPlatilloListOrdenHasPlatilloToAttach);
             }
             platillo.setOrdenHasPlatilloList(attachedOrdenHasPlatilloList);
@@ -112,7 +112,7 @@ public class PlatilloJpaController implements Serializable {
             platillo.setIngredientesList(ingredientesListNew);
             List<OrdenHasPlatillo> attachedOrdenHasPlatilloListNew = new ArrayList<OrdenHasPlatillo>();
             for (OrdenHasPlatillo ordenHasPlatilloListNewOrdenHasPlatilloToAttach : ordenHasPlatilloListNew) {
-                ordenHasPlatilloListNewOrdenHasPlatilloToAttach = em.getReference(ordenHasPlatilloListNewOrdenHasPlatilloToAttach.getClass(), ordenHasPlatilloListNewOrdenHasPlatilloToAttach.getOrdenHasPlatilloPK());
+                ordenHasPlatilloListNewOrdenHasPlatilloToAttach = em.getReference(ordenHasPlatilloListNewOrdenHasPlatilloToAttach.getClass(), ordenHasPlatilloListNewOrdenHasPlatilloToAttach.getIdOrdenHasPlatillo());
                 attachedOrdenHasPlatilloListNew.add(ordenHasPlatilloListNewOrdenHasPlatilloToAttach);
             }
             ordenHasPlatilloListNew = attachedOrdenHasPlatilloListNew;
