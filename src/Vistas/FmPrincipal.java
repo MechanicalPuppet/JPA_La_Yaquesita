@@ -296,14 +296,14 @@ public class FmPrincipal extends javax.swing.JFrame {
         tbtnExtras.setSelected(false);
         tbtnBebidas.setSelected(true);
         btn1.setText("Coca L");
-        btn2.setText("Coca B");
+        btn2.setText("Jarritos");
     }//GEN-LAST:event_tbtnBebidasActionPerformed
 
     private void tbtnExtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbtnExtrasActionPerformed
         tbtnHotdogs.setSelected(false);
         tbtnExtras.setSelected(true);
         tbtnBebidas.setSelected(false);
-        btn1.setText("Queso de Nacho");
+        btn1.setText("Queso de Nachos");
         btn2.setText("Salsa Valiente");
     }//GEN-LAST:event_tbtnExtrasActionPerformed
 
@@ -311,13 +311,17 @@ public class FmPrincipal extends javax.swing.JFrame {
         if (btn1.getText().equalsIgnoreCase("Yaqui")) {
             Yaqui yaqui = new Yaqui(this, true, this);
             yaqui.setVisible(true);
-
         } else if(btn1.getText().equalsIgnoreCase("Coca L")){
             CocaL cocaL = new CocaL(this, true, this);
             cocaL.setVisible(true);
+        } else if(btn1.getText().equalsIgnoreCase("Queso de Nachos")){
+            QuesoNachos quesoNachos = new QuesoNachos(this, true, this);
+            quesoNachos.setVisible(true);
         }
     }//GEN-LAST:event_btn1ActionPerformed
 
+    
+    //Tenemos que reemplazar esto por un Switch...
     private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
         if (btn2.getText().equalsIgnoreCase("Cuate")) {
             Cuate cuate = new Cuate(this, true, this);
@@ -325,6 +329,9 @@ public class FmPrincipal extends javax.swing.JFrame {
         } else if (btn2.getText().equalsIgnoreCase("Jarritos")){
             Jarritos jarritos = new Jarritos(this, true, this);
             jarritos.setVisible(true);
+        } else if(btn2.getText().equalsIgnoreCase("Salsa valiente")){
+            SalsaValiente salsaValiente = new SalsaValiente(this, true, this);
+            salsaValiente.setVisible(true);
         }
     }//GEN-LAST:event_btn2ActionPerformed
 
