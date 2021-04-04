@@ -32,7 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Ingredientes.findAll", query = "SELECT i FROM Ingredientes i")
     , @NamedQuery(name = "Ingredientes.findByIdingredientes", query = "SELECT i FROM Ingredientes i WHERE i.idingredientes = :idingredientes")
-    , @NamedQuery(name = "Ingredientes.findByNombre", query = "SELECT i FROM Ingredientes i WHERE i.nombre = :nombre")})
+    , @NamedQuery(name = "Ingredientes.findByNombre", query = "SELECT i FROM Ingredientes i WHERE i.nombre = :nombre")
+    , @NamedQuery(name = "Ingredientes.findByAbreviacion", query = "SELECT i FROM Ingredientes i WHERE i.abreviacion = :abreviacion")})
 public class Ingredientes implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,9 +45,14 @@ public class Ingredientes implements Serializable {
     @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
+    @Basic(optional = false)
+    @Column(name = "abreviacion")
+    private String abreviacion;
     @JoinTable(name = "platillo_has_ingredientes", joinColumns = {
-        @JoinColumn(name = "ingredientes_idingredientes", referencedColumnName = "idingredientes")}, inverseJoinColumns = {
-        @JoinColumn(name = "platillo_idplatillo", referencedColumnName = "idplatillo")})
+        @JoinColumn(name = "ingredientes_idingredientes", referencedColumnName = "idingredientes")
+        , @JoinColumn(name = "ingredientes_idingredientes", referencedColumnName = "idingredientes")}, inverseJoinColumns = {
+        @JoinColumn(name = "platillo_idplatillo", referencedColumnName = "idplatillo")
+        , @JoinColumn(name = "platillo_idplatillo", referencedColumnName = "idplatillo")})
     @ManyToMany
     private List<Platillo> platilloList;
 
@@ -57,9 +63,10 @@ public class Ingredientes implements Serializable {
         this.idingredientes = idingredientes;
     }
 
-    public Ingredientes(Integer idingredientes, String nombre) {
+    public Ingredientes(Integer idingredientes, String nombre, String abreviacion) {
         this.idingredientes = idingredientes;
         this.nombre = nombre;
+        this.abreviacion = abreviacion;
     }
 
     public Integer getIdingredientes() {
@@ -76,6 +83,14 @@ public class Ingredientes implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getAbreviacion() {
+        return abreviacion;
+    }
+
+    public void setAbreviacion(String abreviacion) {
+        this.abreviacion = abreviacion;
     }
 
     @XmlTransient

@@ -21,6 +21,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+
 /**
  *
  * @author Jbran
@@ -44,21 +45,21 @@ public class OrdenJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Usuarios idusuario = orden.getIdusuario();
-            if (idusuario != null) {
-                idusuario = em.getReference(idusuario.getClass(), idusuario.getIdusuario());
-                orden.setIdusuario(idusuario);
+            Usuarios usuarios = orden.getUsuarios();
+            if (usuarios != null) {
+                usuarios = em.getReference(usuarios.getClass(), usuarios.getIdusuario());
+                orden.setUsuarios(usuarios);
             }
             List<OrdenHasPlatillo> attachedOrdenHasPlatilloList = new ArrayList<OrdenHasPlatillo>();
             for (OrdenHasPlatillo ordenHasPlatilloListOrdenHasPlatilloToAttach : orden.getOrdenHasPlatilloList()) {
-                ordenHasPlatilloListOrdenHasPlatilloToAttach = em.getReference(ordenHasPlatilloListOrdenHasPlatilloToAttach.getClass(), ordenHasPlatilloListOrdenHasPlatilloToAttach.getOrdenHasPlatilloPK());
+                ordenHasPlatilloListOrdenHasPlatilloToAttach = em.getReference(ordenHasPlatilloListOrdenHasPlatilloToAttach.getClass(), ordenHasPlatilloListOrdenHasPlatilloToAttach.getIdOrdenHasPlatillo());
                 attachedOrdenHasPlatilloList.add(ordenHasPlatilloListOrdenHasPlatilloToAttach);
             }
             orden.setOrdenHasPlatilloList(attachedOrdenHasPlatilloList);
             em.persist(orden);
-            if (idusuario != null) {
-                idusuario.getOrdenList().add(orden);
-                idusuario = em.merge(idusuario);
+            if (usuarios != null) {
+                usuarios.getOrdenList().add(orden);
+                usuarios = em.merge(usuarios);
             }
             for (OrdenHasPlatillo ordenHasPlatilloListOrdenHasPlatillo : orden.getOrdenHasPlatilloList()) {
                 Orden oldOrdenOfOrdenHasPlatilloListOrdenHasPlatillo = ordenHasPlatilloListOrdenHasPlatillo.getOrden();
@@ -83,8 +84,8 @@ public class OrdenJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Orden persistentOrden = em.find(Orden.class, orden.getIdorden());
-            Usuarios idusuarioOld = persistentOrden.getIdusuario();
-            Usuarios idusuarioNew = orden.getIdusuario();
+            Usuarios usuariosOld = persistentOrden.getUsuarios();
+            Usuarios usuariosNew = orden.getUsuarios();
             List<OrdenHasPlatillo> ordenHasPlatilloListOld = persistentOrden.getOrdenHasPlatilloList();
             List<OrdenHasPlatillo> ordenHasPlatilloListNew = orden.getOrdenHasPlatilloList();
             List<String> illegalOrphanMessages = null;
@@ -99,25 +100,25 @@ public class OrdenJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            if (idusuarioNew != null) {
-                idusuarioNew = em.getReference(idusuarioNew.getClass(), idusuarioNew.getIdusuario());
-                orden.setIdusuario(idusuarioNew);
+            if (usuariosNew != null) {
+                usuariosNew = em.getReference(usuariosNew.getClass(), usuariosNew.getIdusuario());
+                orden.setUsuarios(usuariosNew);
             }
             List<OrdenHasPlatillo> attachedOrdenHasPlatilloListNew = new ArrayList<OrdenHasPlatillo>();
             for (OrdenHasPlatillo ordenHasPlatilloListNewOrdenHasPlatilloToAttach : ordenHasPlatilloListNew) {
-                ordenHasPlatilloListNewOrdenHasPlatilloToAttach = em.getReference(ordenHasPlatilloListNewOrdenHasPlatilloToAttach.getClass(), ordenHasPlatilloListNewOrdenHasPlatilloToAttach.getOrdenHasPlatilloPK());
+                ordenHasPlatilloListNewOrdenHasPlatilloToAttach = em.getReference(ordenHasPlatilloListNewOrdenHasPlatilloToAttach.getClass(), ordenHasPlatilloListNewOrdenHasPlatilloToAttach.getIdOrdenHasPlatillo());
                 attachedOrdenHasPlatilloListNew.add(ordenHasPlatilloListNewOrdenHasPlatilloToAttach);
             }
             ordenHasPlatilloListNew = attachedOrdenHasPlatilloListNew;
             orden.setOrdenHasPlatilloList(ordenHasPlatilloListNew);
             orden = em.merge(orden);
-            if (idusuarioOld != null && !idusuarioOld.equals(idusuarioNew)) {
-                idusuarioOld.getOrdenList().remove(orden);
-                idusuarioOld = em.merge(idusuarioOld);
+            if (usuariosOld != null && !usuariosOld.equals(usuariosNew)) {
+                usuariosOld.getOrdenList().remove(orden);
+                usuariosOld = em.merge(usuariosOld);
             }
-            if (idusuarioNew != null && !idusuarioNew.equals(idusuarioOld)) {
-                idusuarioNew.getOrdenList().add(orden);
-                idusuarioNew = em.merge(idusuarioNew);
+            if (usuariosNew != null && !usuariosNew.equals(usuariosOld)) {
+                usuariosNew.getOrdenList().add(orden);
+                usuariosNew = em.merge(usuariosNew);
             }
             for (OrdenHasPlatillo ordenHasPlatilloListNewOrdenHasPlatillo : ordenHasPlatilloListNew) {
                 if (!ordenHasPlatilloListOld.contains(ordenHasPlatilloListNewOrdenHasPlatillo)) {
@@ -170,10 +171,10 @@ public class OrdenJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Usuarios idusuario = orden.getIdusuario();
-            if (idusuario != null) {
-                idusuario.getOrdenList().remove(orden);
-                idusuario = em.merge(idusuario);
+            Usuarios usuarios = orden.getUsuarios();
+            if (usuarios != null) {
+                usuarios.getOrdenList().remove(orden);
+                usuarios = em.merge(usuarios);
             }
             em.remove(orden);
             em.getTransaction().commit();

@@ -51,7 +51,7 @@ public class Usuarios implements Serializable {
     @Basic(optional = false)
     @Column(name = "puesto")
     private String puesto;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarios")
     private List<Orden> ordenList;
 
     public Usuarios() {

@@ -51,12 +51,12 @@ public class UsuariosJpaController implements Serializable {
             usuarios.setOrdenList(attachedOrdenList);
             em.persist(usuarios);
             for (Orden ordenListOrden : usuarios.getOrdenList()) {
-                Usuarios oldIdusuarioOfOrdenListOrden = ordenListOrden.getIdusuario();
-                ordenListOrden.setIdusuario(usuarios);
+                Usuarios oldUsuariosOfOrdenListOrden = ordenListOrden.getUsuarios();
+                ordenListOrden.setUsuarios(usuarios);
                 ordenListOrden = em.merge(ordenListOrden);
-                if (oldIdusuarioOfOrdenListOrden != null) {
-                    oldIdusuarioOfOrdenListOrden.getOrdenList().remove(ordenListOrden);
-                    oldIdusuarioOfOrdenListOrden = em.merge(oldIdusuarioOfOrdenListOrden);
+                if (oldUsuariosOfOrdenListOrden != null) {
+                    oldUsuariosOfOrdenListOrden.getOrdenList().remove(ordenListOrden);
+                    oldUsuariosOfOrdenListOrden = em.merge(oldUsuariosOfOrdenListOrden);
                 }
             }
             em.getTransaction().commit();
@@ -81,7 +81,7 @@ public class UsuariosJpaController implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Orden " + ordenListOldOrden + " since its idusuario field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Orden " + ordenListOldOrden + " since its usuarios field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -97,12 +97,12 @@ public class UsuariosJpaController implements Serializable {
             usuarios = em.merge(usuarios);
             for (Orden ordenListNewOrden : ordenListNew) {
                 if (!ordenListOld.contains(ordenListNewOrden)) {
-                    Usuarios oldIdusuarioOfOrdenListNewOrden = ordenListNewOrden.getIdusuario();
-                    ordenListNewOrden.setIdusuario(usuarios);
+                    Usuarios oldUsuariosOfOrdenListNewOrden = ordenListNewOrden.getUsuarios();
+                    ordenListNewOrden.setUsuarios(usuarios);
                     ordenListNewOrden = em.merge(ordenListNewOrden);
-                    if (oldIdusuarioOfOrdenListNewOrden != null && !oldIdusuarioOfOrdenListNewOrden.equals(usuarios)) {
-                        oldIdusuarioOfOrdenListNewOrden.getOrdenList().remove(ordenListNewOrden);
-                        oldIdusuarioOfOrdenListNewOrden = em.merge(oldIdusuarioOfOrdenListNewOrden);
+                    if (oldUsuariosOfOrdenListNewOrden != null && !oldUsuariosOfOrdenListNewOrden.equals(usuarios)) {
+                        oldUsuariosOfOrdenListNewOrden.getOrdenList().remove(ordenListNewOrden);
+                        oldUsuariosOfOrdenListNewOrden = em.merge(oldUsuariosOfOrdenListNewOrden);
                     }
                 }
             }
@@ -141,7 +141,7 @@ public class UsuariosJpaController implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Usuarios (" + usuarios + ") cannot be destroyed since the Orden " + ordenListOrphanCheckOrden + " in its ordenList field has a non-nullable idusuario field.");
+                illegalOrphanMessages.add("This Usuarios (" + usuarios + ") cannot be destroyed since the Orden " + ordenListOrphanCheckOrden + " in its ordenList field has a non-nullable usuarios field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

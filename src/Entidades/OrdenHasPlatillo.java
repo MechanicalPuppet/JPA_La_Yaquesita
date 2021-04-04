@@ -8,9 +8,12 @@ package Entidades;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,16 +29,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "OrdenHasPlatillo.findAll", query = "SELECT o FROM OrdenHasPlatillo o")
-    , @NamedQuery(name = "OrdenHasPlatillo.findByOrdenIdorden", query = "SELECT o FROM OrdenHasPlatillo o WHERE o.ordenHasPlatilloPK.ordenIdorden = :ordenIdorden")
-    , @NamedQuery(name = "OrdenHasPlatillo.findByPlatilloIdplatillo", query = "SELECT o FROM OrdenHasPlatillo o WHERE o.ordenHasPlatilloPK.platilloIdplatillo = :platilloIdplatillo")
     , @NamedQuery(name = "OrdenHasPlatillo.findByCantidad", query = "SELECT o FROM OrdenHasPlatillo o WHERE o.cantidad = :cantidad")
     , @NamedQuery(name = "OrdenHasPlatillo.findByNotas", query = "SELECT o FROM OrdenHasPlatillo o WHERE o.notas = :notas")
-    , @NamedQuery(name = "OrdenHasPlatillo.findByPrecio", query = "SELECT o FROM OrdenHasPlatillo o WHERE o.precio = :precio")})
+    , @NamedQuery(name = "OrdenHasPlatillo.findByPrecio", query = "SELECT o FROM OrdenHasPlatillo o WHERE o.precio = :precio")
+    , @NamedQuery(name = "OrdenHasPlatillo.findByIdOrdenHasPlatillo", query = "SELECT o FROM OrdenHasPlatillo o WHERE o.idOrdenHasPlatillo = :idOrdenHasPlatillo")})
 public class OrdenHasPlatillo implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected OrdenHasPlatilloPK ordenHasPlatilloPK;
     @Basic(optional = false)
     @Column(name = "cantidad")
     private int cantidad;
@@ -44,36 +44,33 @@ public class OrdenHasPlatillo implements Serializable {
     @Basic(optional = false)
     @Column(name = "precio")
     private float precio;
-    @JoinColumn(name = "orden_idorden", referencedColumnName = "idorden", insertable = false, updatable = false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_orden_has_platillo")
+    private Integer idOrdenHasPlatillo;
+    @JoinColumns({
+        @JoinColumn(name = "orden_idorden", referencedColumnName = "idorden")
+        , @JoinColumn(name = "orden_idorden", referencedColumnName = "idorden")})
     @ManyToOne(optional = false)
     private Orden orden;
-    @JoinColumn(name = "platillo_idplatillo", referencedColumnName = "idplatillo", insertable = false, updatable = false)
+    @JoinColumns({
+        @JoinColumn(name = "platillo_idplatillo", referencedColumnName = "idplatillo")
+        , @JoinColumn(name = "platillo_idplatillo", referencedColumnName = "idplatillo")})
     @ManyToOne(optional = false)
     private Platillo platillo;
 
     public OrdenHasPlatillo() {
     }
 
-    public OrdenHasPlatillo(OrdenHasPlatilloPK ordenHasPlatilloPK) {
-        this.ordenHasPlatilloPK = ordenHasPlatilloPK;
+    public OrdenHasPlatillo(Integer idOrdenHasPlatillo) {
+        this.idOrdenHasPlatillo = idOrdenHasPlatillo;
     }
 
-    public OrdenHasPlatillo(OrdenHasPlatilloPK ordenHasPlatilloPK, int cantidad, float precio) {
-        this.ordenHasPlatilloPK = ordenHasPlatilloPK;
+    public OrdenHasPlatillo(Integer idOrdenHasPlatillo, int cantidad, float precio) {
+        this.idOrdenHasPlatillo = idOrdenHasPlatillo;
         this.cantidad = cantidad;
         this.precio = precio;
-    }
-
-    public OrdenHasPlatillo(int ordenIdorden, int platilloIdplatillo) {
-        this.ordenHasPlatilloPK = new OrdenHasPlatilloPK(ordenIdorden, platilloIdplatillo);
-    }
-
-    public OrdenHasPlatilloPK getOrdenHasPlatilloPK() {
-        return ordenHasPlatilloPK;
-    }
-
-    public void setOrdenHasPlatilloPK(OrdenHasPlatilloPK ordenHasPlatilloPK) {
-        this.ordenHasPlatilloPK = ordenHasPlatilloPK;
     }
 
     public int getCantidad() {
@@ -100,6 +97,14 @@ public class OrdenHasPlatillo implements Serializable {
         this.precio = precio;
     }
 
+    public Integer getIdOrdenHasPlatillo() {
+        return idOrdenHasPlatillo;
+    }
+
+    public void setIdOrdenHasPlatillo(Integer idOrdenHasPlatillo) {
+        this.idOrdenHasPlatillo = idOrdenHasPlatillo;
+    }
+
     public Orden getOrden() {
         return orden;
     }
@@ -119,7 +124,7 @@ public class OrdenHasPlatillo implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (ordenHasPlatilloPK != null ? ordenHasPlatilloPK.hashCode() : 0);
+        hash += (idOrdenHasPlatillo != null ? idOrdenHasPlatillo.hashCode() : 0);
         return hash;
     }
 
@@ -130,7 +135,7 @@ public class OrdenHasPlatillo implements Serializable {
             return false;
         }
         OrdenHasPlatillo other = (OrdenHasPlatillo) object;
-        if ((this.ordenHasPlatilloPK == null && other.ordenHasPlatilloPK != null) || (this.ordenHasPlatilloPK != null && !this.ordenHasPlatilloPK.equals(other.ordenHasPlatilloPK))) {
+        if ((this.idOrdenHasPlatillo == null && other.idOrdenHasPlatillo != null) || (this.idOrdenHasPlatillo != null && !this.idOrdenHasPlatillo.equals(other.idOrdenHasPlatillo))) {
             return false;
         }
         return true;
@@ -138,7 +143,7 @@ public class OrdenHasPlatillo implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.OrdenHasPlatillo[ ordenHasPlatilloPK=" + ordenHasPlatilloPK + " ]";
+        return "Entidades.OrdenHasPlatillo[ idOrdenHasPlatillo=" + idOrdenHasPlatillo + " ]";
     }
     
 }

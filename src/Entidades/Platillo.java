@@ -154,7 +154,20 @@ public class Platillo implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Platillo[ idplatillo=" + idplatillo + " ]";
+        return nombre + "\t" + "$" + costo + " \n"
+                + formatIngredientes();
     }
-    
+
+    public String formatIngredientes() { // Brandon hizo el cambio a esto el 01/04/2021
+        String ingredientes = "";
+        if (ingredientesList.size() == 11) {
+            return "CT";
+        } else {
+            for (Ingredientes ingrediente : ingredientesList) {
+                ingredientes = ingredientes.concat("\t" + ingrediente.getNombre() + "\n");
+            }
+
+        }
+        return ingredientes;
+    }
 }
