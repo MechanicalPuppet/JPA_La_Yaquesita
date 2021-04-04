@@ -3,10 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Jbran/Documents/GitHub/JPA_La_Yaquesita/src/Vistas/Yaqui.java</file>
-            <file>file:/C:/Users/Jbran/Documents/GitHub/JPA_La_Yaquesita/src/Vistas/FmPrincipal.java</file>
-            <file>file:/C:/Users/Jbran/Documents/GitHub/JPA_La_Yaquesita/src/Vistas/QuesoNachos.java</file>
-            <file>file:/C:/Users/Jbran/Documents/GitHub/JPA_La_Yaquesita/src/Entidades/Platillo.java</file>
+            <file>file:/C:/Users/Zannie/Documents/Anni/ITSON/Sexto%20Semestre/Integrador/JPA_La_Yaquesita/src/Controladores/OrdenJpaController.java</file>
+            <file>file:/C:/Users/Zannie/Documents/Anni/ITSON/Sexto%20Semestre/Integrador/JPA_La_Yaquesita/src/Entidades/OrdenHasPlatillo.java</file>
+            <file>file:/C:/Users/Zannie/Documents/Anni/ITSON/Sexto%20Semestre/Integrador/JPA_La_Yaquesita/src/Entidades/Orden.java</file>
+            <file>file:/C:/Users/Zannie/Documents/Anni/ITSON/Sexto%20Semestre/Integrador/JPA_La_Yaquesita/src/Entidades/Platillo.java</file>
+            <file>file:/C:/Users/Zannie/Documents/Anni/ITSON/Sexto%20Semestre/Integrador/JPA_La_Yaquesita/src/Entidades/Usuarios.java</file>
+            <file>file:/C:/Users/Zannie/Documents/Anni/ITSON/Sexto%20Semestre/Integrador/JPA_La_Yaquesita/src/Entidades/Ingredientes.java</file>
+            <file>file:/C:/Users/Zannie/Documents/Anni/ITSON/Sexto%20Semestre/Integrador/JPA_La_Yaquesita/src/Entidades/Gastos.java</file>
         </group>
     </open-files>
 </project-private>
