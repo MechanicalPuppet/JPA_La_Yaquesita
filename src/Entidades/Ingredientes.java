@@ -124,7 +124,7 @@ public class Ingredientes implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Ingredientes[ idingredientes=" + idingredientes + " ]";
+        return nombre;
     }
     
 }

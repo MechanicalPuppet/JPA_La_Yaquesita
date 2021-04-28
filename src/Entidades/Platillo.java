@@ -118,6 +118,19 @@ public class Platillo implements Serializable {
     public List<Ingredientes> getIngredientesList() {
         return ingredientesList;
     }
+    
+    public String ingredientesListToString(){
+        String ingredientes=null;
+        for (Ingredientes ingrediente : ingredientesList) {
+            if(ingredientes==null){
+                ingredientes=ingrediente.toString();
+            }
+            else{
+                ingredientes=ingredientes.concat(", "+ingrediente);
+            }
+        }
+        return ingredientes;
+    }
 
     public void setIngredientesList(List<Ingredientes> ingredientesList) {
         this.ingredientesList = ingredientesList;
