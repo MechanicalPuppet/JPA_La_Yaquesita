@@ -19,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -50,6 +51,9 @@ public class Platillo implements Serializable {
     @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
+    @Transient
+    private int cantidad;
+    
     @Column(name = "descripcion")
     private String descripcion;
     @Basic(optional = false)
@@ -66,7 +70,27 @@ public class Platillo implements Serializable {
     public Platillo(Integer idplatillo) {
         this.idplatillo = idplatillo;
     }
+    
+    public Platillo(Platillo platillo){
+        this.cantidad = platillo.getCantidad();
+        this.costo = platillo.getCosto();
+        this.descripcion = platillo.getDescripcion();
+        this.idplatillo = platillo.getIdplatillo();
+        this.ingredientesList = platillo.getIngredientesList();
+        this.nombre = platillo.getNombre();
+        this.ordenHasPlatilloList = platillo.getOrdenHasPlatilloList();
+        this.tipoProducto = platillo.getTipoProducto();
+    }
 
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    
     public Platillo(Integer idplatillo, String tipoProducto, String nombre, float costo) {
         this.idplatillo = idplatillo;
         this.tipoProducto = tipoProducto;
@@ -171,16 +195,23 @@ public class Platillo implements Serializable {
                 + formatIngredientes();
     }
 
-    public String formatIngredientes() { // Brandon hizo el cambio a esto el 01/04/2021
+    public String formatIngredientes() { // Brandon hizo el cambio a esto el 01/04/2021 // Brandon volvió a hacer este cambio el 27/04/2021
         String ingredientes = "";
-        if (ingredientesList.size() == 11) {
-            return "CT";
-        } else {
-            for (Ingredientes ingrediente : ingredientesList) {
-                ingredientes = ingredientes.concat("\t" + ingrediente.getNombre() + "\n");
-            }
 
+        for (Ingredientes ingredientes1 : ingredientesList) {
+            if (ingredientes1.getNombre().equalsIgnoreCase("CT")) {
+                return "CT";
+
+            } else if(ingredientes1.getNombre().equalsIgnoreCase("Plain")) {
+            return "Plain";
+            } else{ 
+                for (Ingredientes ingrediente : ingredientesList) {
+                    ingredientes = ingredientes.concat("\t" + ingrediente.getNombre() + "\n");
+                }
+                break;
+            }
         }
+
         return ingredientes;
     }
 }
