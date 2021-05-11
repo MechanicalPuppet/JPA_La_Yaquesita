@@ -143,7 +143,7 @@ public class OrdenHasPlatillo implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.OrdenHasPlatillo[ idOrdenHasPlatillo=" + idOrdenHasPlatillo + " ]";
+        return idOrdenHasPlatillo.toString();
     }
     
 }

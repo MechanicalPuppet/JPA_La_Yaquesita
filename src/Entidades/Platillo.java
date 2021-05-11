@@ -176,18 +176,18 @@ public class Platillo implements Serializable {
         return hash;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Platillo)) {
-            return false;
-        }
-        Platillo other = (Platillo) object;
-        if ((this.idplatillo == null && other.idplatillo != null) || (this.idplatillo != null && !this.idplatillo.equals(other.idplatillo))) {
-            return false;
-        }
-        return true;
-    }
+//    @Override
+//    public boolean equals(Object object) {
+//        // TODO: Warning - this method won't work in the case the id fields are not set
+//        if (!(object instanceof Platillo)) {
+//            return false;
+//        }
+//        Platillo other = (Platillo) object;
+//        if ((this.idplatillo == null && other.idplatillo != null) || (this.idplatillo != null && !this.idplatillo.equals(other.idplatillo))) {
+//            return false;
+//        }
+//        return true;
+//    }
 
     @Override
     public String toString() {

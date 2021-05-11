@@ -138,7 +138,7 @@ public class Orden implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Orden[ idorden=" + idorden + " ]";
+        return idorden.toString();
     }
     
 }
